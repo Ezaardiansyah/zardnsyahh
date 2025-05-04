@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eza Ardiansyah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-content { 
+            display: none;
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        .page-content.active { display: block; }
+
+        .nav-link {
+            position: relative;
+            padding-bottom: 4px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: #3B82F6;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1);
+        }
+        .email-break {
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            hyphens: auto;
+        }
+
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .group:hover .group-hover\:translate-y-0 {
+            transform: translateY(0);
+        }
+
+        .group:hover .group-hover\:opacity-100 {
+            opacity: 1;
+        }
+        .skill-bar {
+            transition: width 0.5s ease;
+        }
+
+        .skill-progress {
+            transition: width 0.5s ease;
+        }
+        #scrollTop {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+#scrollTop:hover {
+    background: #3B82F6 !important;
+}
+        
+        /* Mobile Sidebar */
+        @media (max-width: 768px) {
+            aside {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 50;
+                width: 100%;
+                height: 100vh;
+            }
+            
+            aside.active {
+                transform: translateX(0);
+            }
+            
+            main {
+                margin-left: 0 !important;
+                padding: 1rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block !important;
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                z-index: 100;
+            }
+            
+            
+            
+            /* Perbaikan posisi hamburger icon */
+            .mobile-menu-btn {
+                top: 1.5rem;
+                left: 1.5rem;
+                z-index: 100;
+                background: rgba(31, 41, 55, 0.8);
+                backdrop-filter: blur(4px);
+            }
+            
+            /* Perbaikan navigasi */
+            nav {
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<button id="scrollTop" class="hidden fixed bottom-4 right-4 z-50 w-12 h-12 bg-blue-500/80 hover:bg-blue-500 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110">
+    <i class="fas fa-arrow-up text-white text-xl"></i>
+</button>
+<body class="flex bg-gray-900 text-gray-100 overflow-x-hidden">
+ <!-- Mobile Menu Button -->
+<button class="mobile-menu-btn hidden w-10 h-10 flex items-center justify-center p-0 bg-gray-800/80 rounded-full text-blue-400 shadow-lg" onclick="toggleSidebar()">
+    <i class="fas fa-bars text-lg"></i>
+</button>
+
+<!-- Sidebar -->
+<aside class="w-72 h-screen bg-gray-800 fixed p-6 border-r border-gray-700 flex flex-col">
+    <!-- Tombol Tutup Mobile -->
+    <button class="absolute top-4 right-4 p-2 text-gray-400 lg:hidden" onclick="toggleSidebar()">
+        <i class="fas fa-times text-xl"></i>
+    </button>
+
+        <!-- Profile Section -->
+        <div class="mb-8 text-center">
+            <div class="relative w-40 h-40 mx-auto rounded-full overflow-hidden border-4 border-blue-500/20">
+                <img src="./img/me.jpg" 
+                     alt="Profile"
+                     class="w-full h-full object-cover object-[center_top]">
+                <div class="absolute inset-0 bg-blue-500/10"></div>
+            </div>
+            <h1 class="text-2xl font-bold mt-6 text-blue-400">
+                Maykeza Yudika A
+            </h1>
+            <p class="text-sm text-gray-400 mt-2"></p>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="w-full flex-1">
+            <h2 class="text-blue-400 font-semibold mb-4 text-sm uppercase border-b border-gray-700 pb-2">
+                Kontak
+            </h2>
+            <ul class="space-y-4">
+                <!-- Email -->
+                <li class="flex items-start p-3 rounded-lg bg-gray-700/30 hover:bg-gray-700/50 transition-colors">
+                    <div class="bg-blue-500/20 p-2 rounded-lg mr-3">
+                        <heroicon-outline-envelope class="w-5 h-5 text-blue-400" />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs text-gray-400 mb-1">Email</p>
+                        <a href="mailto:ezaardiansyah1305@gmail.com" 
+                           class="text-xs text-gray-300 break-words hyphens-auto whitespace-normal leading-tight email-break">
+                            ezaardiansyah1305@gmail.com
+                        </a>
+                    </div>
+                </li>
+
+                <!-- Phone -->
+                <li class="flex items-start p-3 rounded-lg bg-gray-700/30 hover:bg-gray-700/50 transition-colors">
+                    <div class="bg-blue-500/20 p-2 rounded-lg mr-3">
+                        <heroicon-outline-phone class="w-5 h-5 text-blue-400" />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs text-gray-400 mb-1">Telepon</p>
+                        <a href="https://wa.me/6285183343405" 
+                           class="text-sm text-gray-300">
+                            +62 851 8334 3405
+                        </a>
+                    </div>
+                </li>
+
+                <!-- Address -->
+                <li class="flex items-start p-3 rounded-lg bg-gray-700/30 hover:bg-gray-700/50 transition-colors">
+                    <div class="bg-blue-500/20 p-2 rounded-lg mr-3">
+                        <heroicon-outline-map-pin class="w-5 h-5 text-blue-400" />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-xs text-gray-400 mb-1">Lokasi</p>
+                        <p class="text-sm text-gray-300">
+                            Surabaya, Jawa Timur
+                        </p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 lg:ml-72 p-4 lg:p-8 overflow-x-hidden">
+      <!-- Navigation -->
+<nav class="mb-6 lg:mb-12">
+    <ul class="flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-2 text-sm lg:text-base">
+        <li>
+            <a href="#about" 
+               class="nav-link text-gray-300 hover:text-blue-400 active"
+               onclick="showPage('about')">
+               About
+            </a>
+        </li>
+        <li>
+            <a href="#resume" 
+               class="nav-link text-gray-300 hover:text-blue-400"
+               onclick="showPage('resume')">
+               Resume
+            </a>
+        </li>
+        <li>
+            <a href="#portfolio" 
+               class="nav-link text-gray-300 hover:text-blue-400"
+               onclick="showPage('portfolio')">
+               Portfolio
+            </a>
+        </li>
+        <li>
+            <a href="#blog" 
+               class="nav-link text-gray-300 hover:text-blue-400"
+               onclick="showPage('blog')">
+               Blog
+            </a>
+        </li>
+    </ul>
+</nav>
+
+         <!-- About Section -->
+<section id="about-content" class="page-content active">
+    <div class="max-w-4xl mx-auto px-4">
+        <!-- Profile Header -->
+        <div class="text-center mb-14">
+            <h2 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-6">
+                About Me
+            </h2>
+            <div class="relative inline-block">
+                <div class="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-cyan-400/30 to-blue-500/30 rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- Content Container -->
+        <div class="space-y-10">
+            <!-- Introduction -->
+            <div class="relative group">
+                <div class="absolute -left-8 top-0.5 w-6 h-6 bg-cyan-400/10 rounded-full flex items-center justify-center">
+                    <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+                </div>
+                <p class="text-gray-300 text-lg leading-relaxed pl-8 border-l-2 border-cyan-400/20">
+                    👋 Saya Maykeza, fresh graduate SMK jurusan 
+                    <span class="text-cyan-400 font-medium">Rekayasa Perangkat Lunak</span> asal Surabaya. 
+                    Dengan bekal pengetahuan dasar pengembangan web dan desain digital dari sekolah, 
+                    saya bersemangat untuk terus belajar dan mengaplikasikan ilmu dalam proyek-proyek nyata.
+                </p>
+            </div>
+
+            <!-- Soft Skills Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Interpersonal Skills -->
+                <div class="p-8 bg-gray-800/50 rounded-2xl shadow-xl hover:shadow-cyan-400/10 transition-all">
+                    <div class="flex items-start gap-5 mb-6">
+                        <div class="w-14 h-14 bg-cyan-400/10 rounded-xl flex items-center justify-center">
+                            <heroicon-outline-user-group class="w-7 h-7 text-cyan-400" />
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Kolaborasi Tim</h3>
+                            <p class="text-gray-400 leading-relaxed">
+                                Lebih dari sekadar teknis, saya menghargai:
+                                <ul class="list-disc list-inside mt-2 space-y-2 text-gray-400">
+                                    <li>Komunikasi efektif antar tim</li>
+                                    <li>Adaptabilitas dalam berbagai situasi</li>
+                                    <li>Empati dalam memahami kebutuhan</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Creative Approach -->
+                <div class="p-8 bg-gray-800/50 rounded-2xl shadow-xl hover:shadow-purple-400/10 transition-all">
+                    <div class="flex items-start gap-5 mb-6">
+                        <div class="w-14 h-14 bg-purple-400/10 rounded-xl flex items-center justify-center">
+                            <heroicon-outline-light-bulb class="w-7 h-7 text-purple-400" />
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Pendekatan Kreatif</h3>
+                            <p class="text-gray-400 leading-relaxed">
+                                Menyelesaikan tantangan dengan:
+                                <ul class="list-disc list-inside mt-2 space-y-2 text-gray-400">
+                                    <li>Pemecahan masalah inovatif</li>
+                                    <li>Desain yang berpusat pada pengguna</li>
+                                    <li>Strategi konten yang relevan</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Value Proposition -->
+            <div class="p-8 bg-gray-800/50 rounded-2xl shadow-xl">
+                <div class="flex items-start gap-5">
+                    <div class="w-14 h-14 bg-green-400/10 rounded-xl flex items-center justify-center">
+                        <heroicon-outline-heart class="w-7 h-7 text-green-400" />
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">Yang Saya Percayai</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-blue-400/10 rounded-lg flex items-center justify-center">
+                                    <heroicon-outline-arrow-path class="w-5 h-5 text-blue-400" />
+                                </div>
+                                <span class="text-gray-400">Fleksibilitas & Adaptasi</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-purple-400/10 rounded-lg flex items-center justify-center">
+                                    <heroicon-outline-chat-bubble-left-right class="w-5 h-5 text-purple-400" />
+                                </div>
+                                <span class="text-gray-400">Komunikasi Transparan</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-green-400/10 rounded-lg flex items-center justify-center">
+                                    <heroicon-outline-puzzle-piece class="w-5 h-5 text-green-400" />
+                                </div>
+                                <span class="text-gray-400">Kolaborasi Sinergis</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-yellow-400/10 rounded-lg flex items-center justify-center">
+                                    <heroicon-outline-clock class="w-5 h-5 text-yellow-400" />
+                                </div>
+                                <span class="text-gray-400">Manajemen Waktu Efektif</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Philosophy -->
+            <div class="text-center mt-10">
+                <div class="inline-block max-w-2xl">
+                    <p class="text-xl text-gray-300 italic relative">
+                        <span class="absolute -left-8 top-0 text-4xl text-cyan-400/30">“</span>
+                        Teknologi adalah alat, namun 
+                        <span class="text-cyan-400 not-italic font-medium">manusia</span> yang 
+                        <span class="text-purple-400 not-italic font-medium">menentukan nilai</span>
+                        <span class="absolute -right-8 bottom-0 text-4xl text-purple-400/30">”</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+       <!-- Resume Section -->
+<section id="resume-content" class="page-content">
+    <div class="max-w-5xl">
+        <!-- Education & Experience -->
+        <div class="grid lg:grid-cols-2 gap-8">
+            <!-- Education Column -->
+            <div class="space-y-8">
+                <h3 class="text-2xl font-bold text-blue-400 flex items-center mb-6">
+                    <heroicon-outline-academic-cap class="w-6 h-6 mr-2" />
+                    Pendidikan
+                </h3>
+                
+                <div class="p-6 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-white rounded-lg overflow-hidden">
+                            <img src="./img/smkn 1 surabaya.jpeg" 
+                                 alt="School Logo"
+                                 class="w-full h-full object-contain object-center p-1 hover:scale-105 transition-transform">
+                        </div>
+                        <div class="flex-1">
+                            <div class="space-y-2">
+                                <h4 class="font-semibold text-lg">SMKN 1 SURABAYA</h4>
+                                <p class="text-sm text-gray-400">Rekayasa Perangkat Lunak</p>
+                                
+                                <div class="flex items-center text-gray-500 text-xs mt-3">
+                                    <heroicon-outline-calendar class="w-4 h-4 mr-2 flex-shrink-0" />
+                                    <span class="whitespace-nowrap overflow-visible">
+                                       2022-2025
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Status dipindahkan ke bawah dengan margin top yang lebih besar -->
+                            <div class="mt-10">
+                                <span class="inline-block px-3 py-1.5 text-xs bg-green-500/20 text-green-400 rounded-full">
+                                    Menunggu Ijazah
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Experience Column -->
+            <div class="space-y-8">
+                <h3 class="text-2xl font-bold text-blue-400 flex items-center mb-6">
+                    <heroicon-outline-briefcase class="w-6 h-6 mr-2" />
+                    Pengalaman
+                </h3>
+                
+                <div class="p-6 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 space-y-4">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 bg-white rounded-lg overflow-hidden">
+                            <img src="./img/limabenua.jpg" 
+                                 alt="School Logo"
+                                 class="w-full h-full object-contain object-center p-1 hover:scale-105 transition-transform">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-semibold text-lg mb-1">PT. Lima Benua Koneksindo</h4>
+                            <p class="text-gray-400 text-sm">Magang Pengembang Web</p>
+                            
+                            <div class="flex items-center text-gray-500 text-xs mt-3">
+                                <heroicon-outline-calendar class="w-4 h-4 mr-2 flex-shrink-0" />
+                                <span class="whitespace-nowrap overflow-visible">
+                                    Sept 2024 - Feb 2025
+                                </span>
+                            </div>
+                            
+                            <ul class="mt-6 space-y-4 text-sm"> <!-- Tambah margin-top lebih besar -->
+                                <li class="flex items-start gap-2.5"> <!-- Tambah gap -->
+                                    <div class="w-2 h-2 bg-blue-400 rounded-full mt-1 flex-shrink-0"></div>
+                                    <span class="flex-1">Pengembangan Website dengan WordPress</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <div class="w-2 h-2 bg-blue-400 rounded-full mt-1 flex-shrink-0"></div>
+                                    <span class="flex-1">Manajemen Konten Digital</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <div class="w-2 h-2 bg-blue-400 rounded-full mt-1 flex-shrink-0"></div>
+                                    <span class="flex-1">Kolaborasi Tim Proyek</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Competencies Section -->
+        <div class="mt-12">
+            <h3 class="text-2xl font-bold text-blue-400 flex items-center mb-8">
+                <heroicon-outline-beaker class="w-6 h-6 mr-2" />
+                Kompetensi
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+               <!-- Technical Skills -->
+<div class="p-6 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700">
+    <h4 class="text-lg font-semibold text-blue-400 mb-6">Kemampuan Teknis</h4>
+    <div class="space-y-5">
+        <div>
+            <div class="flex justify-between text-sm mb-2">
+                <span>WordPress</span>
+                <span>65%</span>
+            </div>
+            <div class="skill-bar h-2 bg-gray-700 rounded-full overflow-hidden">
+                <div class="skill-progress h-full bg-blue-500" style="width: 65%"></div>
+            </div>
+        </div>
+        <div>
+            <div class="flex justify-between text-sm mb-2">
+                <span>Desain Grafis</span>
+                <span>52%</span>
+            </div>
+            <div class="skill-bar h-2 bg-gray-700 rounded-full overflow-hidden">
+                <div class="skill-progress h-full bg-blue-500" style="width: 52%"></div>
+            </div>
+        </div>
+        <div>
+            <div class="flex justify-between text-sm mb-2">
+                <span>Editing Video</span>
+                <span>73%</span>
+            </div>
+            <div class="skill-bar h-2 bg-gray-700 rounded-full overflow-hidden">
+                <div class="skill-progress h-full bg-blue-500" style="width: 73%"></div>
+            </div>
+        </div>
+        <div>
+            <div class="flex justify-between text-sm mb-2">
+                <span>Web Development Basics</span>
+                <span>57%</span>
+            </div>
+            <div class="skill-bar h-2 bg-gray-700 rounded-full overflow-hidden">
+                <div class="skill-progress h-full bg-blue-500" style="width: 57%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                <!-- Soft Skills -->
+                <div class="p-6 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700">
+                    <h4 class="text-lg font-semibold text-blue-400 mb-6">Soft Skills</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-3 py-1.5 text-sm bg-blue-400/20 text-blue-400 rounded-full">Kerja Tim</span>
+                        <span class="px-3 py-1.5 text-sm bg-green-400/20 text-green-400 rounded-full">Komunikasi</span>
+                        <span class="px-3 py-1.5 text-sm bg-purple-400/20 text-purple-400 rounded-full">Manajemen Waktu</span>
+                        <span class="px-3 py-1.5 text-sm bg-yellow-400/20 text-yellow-400 rounded-full">Kreativitas</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+         <!-- Portfolio Section -->
+<section id="portfolio-content" class="page-content">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Portfolio Item 1 -->
+        <div class="card-hover group relative rounded-xl bg-gray-800 overflow-hidden transition-all duration-300 hover:bg-gray-800/90">
+            <div class="relative overflow-hidden">
+                <img src="./img/appkasir.PNG" 
+                     alt="Project" 
+                     class="w-full h-56 object-cover transform transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        <span class="px-3 py-1 text-xs font-medium bg-red-500/20 text-red-400 rounded-full">Laravel</span>
+                        <span class="px-3 py-1 text-xs font-medium bg-purple-500/20 text-purple-400 rounded-full">Blade</span>
+                        <span class="px-3 py-1 text-xs font-medium bg-green-500/20 text-green-400 rounded-full">MySql</span>
+                    </div>
+                    <a href="https://github.com/Ezaardiansyah/app-kasir" class="inline-flex items-center text-sm text-blue-400 hover:text-blue-300">
+                        View Project
+                        <heroicon-outline-arrow-right class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"/>
+                    </a>
+                </div>
+            </div>
+            <div class="p-6">
+                <h3 class="text-xl font-semibold mb-2">App Kasir</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Aplikasi kasir berbasis Laravel dengan fitur login, manajemen produk, keranjang belanja, dan riwayat transaksi. Desain responsif dan mudah digunakan.
+                </p>
+            </div>
+        </div>
+
+        <!-- Portfolio Item 2 -->
+        <div class="card-hover group relative rounded-xl bg-gray-800 overflow-hidden transition-all duration-300 hover:bg-gray-800/90">
+            <div class="relative overflow-hidden">
+                <img src=".//img/sera.PNG" 
+                     alt="Project" 
+                     class="w-full h-56 object-cover transform transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        <span class="px-3 py-1 text-xs font-medium bg-orange-500/20 text-orange-400 rounded-full">Editing Video</span>
+                        <span class="px-3 py-1 text-xs font-medium bg-zinc-500/20 text-white-400 rounded-full">Capcut</span>
+                        <span class="px-3 py-1 text-xs font-medium bg-indigo-500/20 text-indigo-400 rounded-full">After Effect</span>
+                    </div>
+                    <a href="https://www.instagram.com/p/DGxmhJ1oY-M/" class="inline-flex items-center text-sm text-blue-400 hover:text-blue-300">
+                        View Project
+                        <heroicon-outline-arrow-right class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"/>
+                    </a>
+                </div>
+            </div>
+            <div class="p-6">
+                <h3 class="text-l font-semibold mb-2">Cinematic Iklan – SERA Padlock</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Video iklan cinematic SERA Padlock hasil editing saya menggunakan CapCut dengan sentuhan After Effects pada bagian 3D text tracking. Menonjolkan visual dramatis, transisi halus, dan suasana kuat untuk meningkatkan daya tarik produk.
+                </p>
+            </div>
+        </div>
+
+        <!-- Portfolio Item 3 -->
+        <div class="card-hover group relative rounded-xl bg-gray-800 overflow-hidden transition-all duration-300 hover:bg-gray-800/90">
+            <div class="relative overflow-hidden">
+                <img src="./img/kadinjatim.jpg" 
+                     alt="Project" 
+                     class="w-full h-56 object-cover transform transition-transform duration-500 group-hover:scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        <span class="px-3 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full">WordPress</span>
+                        <span class="px-3 py-1 text-xs font-medium bg-lime-500/20 text-lime-400 rounded-full">Avada</span>
+                    </div>
+                    <a href="#" class="inline-flex items-center text-sm text-blue-400 hover:text-blue-300">
+                        <span class="inline-flex items-center text-sm text-gray-500 cursor-help">
+                            <heroicon-outline-information-circle class="w-4 h-4 mr-2" />
+                            Privat
+                        </span>
+                        <heroicon-outline-arrow-right class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"/>
+                    </a>
+                </div>
+            </div>
+            <div class="p-6">
+                <h3 class="text-xl font-semibold mb-2">Pembuatan Website Kadin Jatim dengan WordPress Avada</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Bersama tim, saya mengembangkan website resmi Kadin Jatim menggunakan tema Avada di WordPress. Website ini dirancang untuk memberikan informasi terbaru, layanan, dan berita terkait Kamar Dagang dan Industri Jawa Timur dengan tampilan responsif dan profesional.
+
+
+                </p>
+            </div>
+        </div>
+        <!-- Portfolio Item 4 -->
+<div class="card-hover group relative rounded-xl bg-gray-800 overflow-hidden transition-all duration-300 hover:bg-gray-800/90">
+    <div class="relative overflow-hidden">
+        <img src="./img/vokasinet.jpg"
+             alt="Project 4" 
+             class="w-full h-56 object-cover transform transition-transform duration-500 group-hover:scale-105">
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+            <div class="flex flex-wrap gap-2 mb-3">
+                <span class="px-3 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full">WordPress</span>
+                        <span class="px-3 py-1 text-xs font-medium bg-lime-500/20 text-lime-400 rounded-full">Avada</span>
+            </div>
+            <a href="#" class="inline-flex items-center text-sm text-blue-400 hover:text-blue-300">
+                <span class="inline-flex items-center text-sm text-gray-500 cursor-help">
+                    <heroicon-outline-information-circle class="w-4 h-4 mr-2" />
+                    Privat
+                </span>
+                <heroicon-outline-arrow-right class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"/>
+            </a>
+        </div>
+    </div>
+    <div class="p-6">
+        <h3 class="text-xl font-semibold mb-2">Pengembangan Website Vokasi.net dengan WordPress Avada</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+            Saya bersama tim membangun website Vokasi.net menggunakan WordPress dan tema Avada, dengan fokus pada penyampaian informasi pendidikan vokasi secara jelas, modern, dan mudah diakses oleh pengunjung dari berbagai kalangan.
+        </p>
+    </div>
+</div>
+
+<!-- Portfolio Item 5 -->
+<div class="card-hover group relative rounded-xl bg-gray-800 overflow-hidden transition-all duration-300 hover:bg-gray-800/90">
+    <div class="relative overflow-hidden">
+        <img src="./img/kurakuraku.PNG"
+             alt="Project 5" 
+             class="w-full h-56 object-cover transform transition-transform duration-500 group-hover:scale-105">
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+            <div class="flex flex-wrap gap-2 mb-3">
+                <span class="px-3 py-1 text-xs font-medium bg-purple-500/20 text-purple-400 rounded-full">Desain Grafis</span>
+                <span class="px-3 py-1 text-xs font-medium bg-blue-500/20 text-blue-400 rounded-full">Canva</span>
+            </div>
+            <a href="https://www.instagram.com/p/DE6iNVApytE/?img_index=1" class="inline-flex items-center text-sm text-blue-400 hover:text-blue-300">
+                View Project
+                <heroicon-outline-arrow-right class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"/>
+            </a>
+        </div>
+    </div>
+    <div class="p-6">
+        <h3 class="text-xl font-semibold mb-2">Pembuat Konten Visual Interaktif
+        </h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+            Desain konten Instagram bertema edukasi visual tentang perbedaan penyu dan kura-kura, dibuat untuk akun @kurakuraku_official guna meningkatkan wawasan pengikut secara menarik dan informatif.
+        </p>
+    </div>
+</div>
+
+<!-- Portfolio Item 6 -->
+<div class="card-hover group relative rounded-xl bg-gray-800 overflow-hidden transition-all duration-300 hover:bg-gray-800/90">
+    <div class="relative overflow-hidden">
+        <img src="./img/vcloud.PNG"
+             alt="Project 6" 
+             class="w-full h-56 object-cover transform transition-transform duration-500 group-hover:scale-105">
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+            <div class="flex flex-wrap gap-2 mb-3">
+                <span class="px-3 py-1 text-xs font-medium bg-red-500/20 text-red-400 rounded-full">Editing Video</span>
+                <span class="px-3 py-1 text-xs font-medium bg-green-500/20 text-green-400 rounded-full">Alight Motion</span>
+            </div>
+            <a href="https://www.instagram.com/p/DFuwMvrN6jk/" class="inline-flex items-center text-sm text-blue-400 hover:text-blue-300">
+                View Project
+                <heroicon-outline-arrow-right class="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"/>
+            </a>
+        </div>
+    </div>
+    <div class="p-6">
+        <h3 class="text-xl font-semibold mb-2">Editing Iklan Produk VCloudPoint</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+            Saya mengedit video singkat promosi produk VCloudPoint menggunakan aplikasi Alight Motion di Android, dengan fokus pada animasi teks dan transisi dinamis untuk menarik perhatian audiens secara efektif.
+        </p>
+    </div>
+</div>
+        
+    </div>
+</section>
+
+         <!-- Blog Section -->
+<section id="blog-content" class="page-content">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+         <!-- Blog Post 1 -->
+        <div class="card-hover bg-gray-800 rounded-lg overflow-hidden">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiNUM-TvlCsp9fdUZNVMLOFKWwZaMKM4LfMUbCnybKzot4XqMrDUsCPs3YqToJ47kPnGp6TYrIrB6r_92106Ux4l8Os0mioCsRafJLgYAY7KwYwMJqa7D7GtR_qwvsxsJmKAd2kWsdUJ1nJj7SjM0uHN50nZ2_UUIukqgDjvjVklYYr_WOe0pMnSYRvM0g/w431-h320/Ilustrasi%20berbagai%20cara%20menghasilkan%20uang%20online%20dengan%20suasana%20ceria%20dan%20informatif..png"
+                 class="w-full h-48 object-cover">
+            <div class="p-4">
+                <div class="flex items-center text-xs text-gray-400 mb-2">
+                    <span class="text-blue-400">Tips</span>
+                    <span class="mx-1">•</span>
+                    <span>April 30, 2025</span>
+                </div>
+                <h3 class="font-semibold mb-2">15 Cara Mudah Menghasilkan Uang di Internet Tanpa Modal</h3>
+                <p class="text-sm text-gray-400 mb-3 line-clamp-3">
+                    Pernah terpikir nggak sih, betapa asyiknya dapat penghasilan sambil santai di rumah, bebas ribet macet dan jam kantor? Di era digital sekarang, internet membuka pintu lebar-lebar untuk meraih cuan tanpa perlu modal besar. Kamu cuma butuh waktu, kreativitas, dan kemauan belajar. Yuk, simak berbagai metode yang bisa langsung kamu praktikkan!
+                </p>
+                <a href="https://acakmenarik.blogspot.com/2025/04/15-cara-mudah-menghasilkan-uang-di.html" class="text-blue-400 text-sm hover:text-blue-300 transition-colors">
+                    Read More →
+                </a>
+            </div>
+        </div>
+       
+     
+
+        <!-- Blog Post 2 -->
+        <div class="card-hover bg-gray-800 rounded-lg overflow-hidden">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgU04t6JOb2YXe9IdRtF4tykxRE7xFbdkQsxk6nEcFbWc6kSPGXmrHjzHYyMvrWwv-gcoOx822IufdDcxg5KWO-K-7KDMFkrAkV6yyUJ5dCjuZkK4mW2yWQ8z91YyxUS224p9yeZ5GjK32Z3PWGjHG-qgfjyggLEg7wuYBzkUKH2lTgB0Eq0Vu75rriYhg/w459-h320/Ilustrasi%20perangkat%20IoT%20yang%20terhubung,%20mencerminkan%20konektivitas%20dan%20otomatisasi%20dalam%20kehidupan%20modern..png" 
+                 alt="Blog Post" 
+                 class="w-full h-48 object-cover">
+            <div class="p-4">
+                <div class="flex items-center text-xs text-gray-400 mb-2">
+                    <span class="text-blue-400">Pengetahuan</span>
+                    <span class="mx-1">•</span>
+                    <span>April 29, 2025</span>
+                </div>
+                <h3 class="font-semibold mb-2">Internet of Things (IoT): Menghubungkan Dunia dengan Teknologi Cerdas</h3>
+                <p class="text-sm text-gray-400 mb-3 line-clamp-3">
+                    Internet of Things, atau yang sering disingkat IoT, adalah konsep di mana berbagai perangkat fisik seperti sensor, perangkat elektronik, dan objek lainnya terhubung dan berkomunikasi melalui jaringan internet. Dengan IoT, pengguna dapat terkoneksi untuk melakukan berbagai aktivitas, mulai dari pencarian informasi hingga pengolahan data, tanpa perlu campur tangan manusia.
+                </p>
+                <a href="https://acakmenarik.blogspot.com/2025/04/internet-of-things-iot-menghubungkan.html" class="text-blue-400 text-sm hover:text-blue-300 transition-colors">
+                    Read More →
+                </a>
+            </div>
+        </div>
+
+        <!-- Blog Post 3 -->
+        <div class="card-hover bg-gray-800 rounded-lg overflow-hidden">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjuOXaL8nexoRx4v0ncJvTZuEXHRZJ1IxEpFkLaWXMCH0bCDu9UBYQHKdvPsiaU_gYsXlP5TEugynh9eeP4BRTln-v9oCg8OacvI8-ANfk-wm_ZZEMbpHyH51VwH1YoA_gAWoqjVn-gGenTun3IJMjE5exTHdSGvT4YlEMlBLXo56I6bxjykbpjVDiPsqg/w466-h397/ChatGPT%20Image%20Apr%2030,%202025,%2009_54_30%20AM.png" 
+                 alt="Blog Post" 
+                 class="w-full h-48 object-cover">
+            <div class="p-4">
+                <div class="flex items-center text-xs text-gray-400 mb-2">
+                    <span class="text-blue-400">Tips</span>
+                    <span class="mx-1">•</span>
+                    <span>April 29, 2025</span>
+                </div>
+                <h3 class="font-semibold mb-2">Panduan Lengkap: 5 Langkah Awal Menjadi Programmer Andal</h3>
+                <p class="text-sm text-gray-400 mb-3 line-clamp-3">
+                    Ingin terjun ke dunia pemrograman tapi bingung harus mulai dari mana? Tenang, kamu nggak sendirian! Banyak pemula merasa kewalahan saat memulai perjalanan sebagai programmer. Tapi kabar baiknya, dengan langkah yang tepat, kamu bisa membangun fondasi yang kuat untuk karier di dunia teknologi.
+                </p>
+                <a href="https://acakmenarik.blogspot.com/2025/04/panduan-lengkap-5-langkah-awal-menjadi.html" class="text-blue-400 text-sm hover:text-blue-300 transition-colors">
+                    Read More →
+                </a>
+            </div>
+        </div>
+        <!-- Blog Post 4 -->
+<div class="card-hover bg-gray-800 rounded-lg overflow-hidden">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgO649NhBkzpc0iLqp-yZyvhyphenhyphenMSkjGDq0NlqoLtIR2WRI4eHYbh9Un0ZzlchzBDBsoLWWoJWxfzIsG6PDZ4zJ7OaxLGX4r0rAyVgE5WCgTKD7gU_20E0wXsRNuEiuSbogd45WmhMJANLGNRmcS7pbBbiNXeFVJ5evxddlG5cXWYBUA8o1HCDJhfE01sBkw/w517-h344/ChatGPT%20Image%20Apr%2029,%202025,%2005_11_48%20PM.png" 
+         alt="Blog Post" 
+         class="w-full h-48 object-cover">
+    <div class="p-4">
+        <div class="flex items-center text-xs text-gray-400 mb-2">
+            <span class="text-blue-400">Tips</span>
+            <span class="mx-1">•</span>
+            <span>April 29, 2025</span>
+        </div>
+        <h3 class="font-semibold mb-2">7 Langkah Membangun Chatbot AI untuk UMKM Tanpa Coding</h3>
+        <p class="text-sm text-gray-400 mb-3 line-clamp-3">
+            UMKM bisa memanfaatkan chatbot AI tanpa perlu kemampuan coding dengan memilih platform no-code, merancang alur percakapan, memasukkan knowledge base, dan melakukan pengujian sebelum peluncuran. Dengan 7 langkah terstruktur ini, bisnis Anda siap melayani pelanggan 24/7, mengotomasi FAQ, dan meningkatkan konversi tanpa biaya pengembangan tinggi.
+        </p>
+        <a href="https://acakmenarik.blogspot.com/2025/04/blog-post.html" class="text-blue-400 text-sm hover:text-blue-300 transition-colors">
+            Read More →
+        </a>
+    </div>
+</div>
+
+<!-- Blog Post 5 -->
+<div class="card-hover bg-gray-800 rounded-lg overflow-hidden">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhsH3V7LskPjX0iLsQpA8sBICpksXmOYwS9kzjRbKZmEbR1FdFrCfo2pck_Ix2gW48GFTPlHX2P1K0vj9OLlV73S91sgpaHz-Y4SsmuNoG26DsNv4cIdVoqt43fJwCxdeNTn5YpUos7XT0pNjPKqshPuYQWBD0k83m0EsyKN8KcqqT9WyhpU7PehjvXkYk/s1024/Ilustrasi%20seorang%20pemula%20sedang%20belajar%20investasi%20saham%20dengan%20grafik%20naik,%20laptop,%20dan%20buku%20catatan%20%E2%80%94%20menggambarkan%20semangat%20belajar%20dan%20optimisme%20dalam%20berinvestasi%20saham%20dari%20nol..png" 
+         alt="Blog Post" 
+         class="w-full h-48 object-cover">
+    <div class="p-4">
+        <div class="flex items-center text-xs text-gray-400 mb-2">
+            <span class="text-blue-400">Tips</span>
+            <span class="mx-1">•</span>
+            <span>April 29, 2025</span>
+        </div>
+        <h3 class="font-semibold mb-2">Belajar Saham dari Nol: Panduan Lengkap untuk Pemula</h3>
+        <p class="text-sm text-gray-400 mb-3 line-clamp-3">
+            Ingin mulai investasi saham tapi bingung harus mulai dari mana? Tenang, kamu tidak sendiri! Investasi saham memang terdengar menantang, tapi dengan panduan yang tepat, kamu bisa memulainya dengan percaya diri. Artikel ini akan membimbingmu langkah demi langkah untuk memahami dunia saham, mulai dari dasar hingga strategi investasi yang cerdas.
+        </p>
+        <a href="https://acakmenarik.blogspot.com/2025/04/belajar-saham-dari-nol-panduan-lengkap.html" class="text-blue-400 text-sm hover:text-blue-300 transition-colors">
+            Read More →
+        </a>
+    </div>
+</div>
+
+<!-- Blog Post 6 -->
+<div class="card-hover bg-gray-800 rounded-lg overflow-hidden">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgZHLJQ0np9IJG3WZ37oFwyX0tGhxI2a4zVlXbCjJRjEKsb3-bWY2E05qV-gG11ybWBpxPz-dYUx56cwBRVeeK0McM1kUAxgZDkDcLvNNRlH9Z8ys4mf-0PdgNIZ5z0r1qOWhcEXVl0gaPoqFXijaOb8vH1QY_w410IYm8LNiBKsSONpNY2R0Q2j8lfPlc/s1024/ilustrasi%20konsep%20kecerdasan%20buatan%20dengan%20elemen%20manusia%20dan%20mesin,%20mood%20informatif%20dan%20futuristik..png" 
+         alt="Blog Post" 
+         class="w-full h-48 object-cover">
+    <div class="p-4">
+        <div class="flex items-center text-xs text-gray-400 mb-2">
+            <span class="text-blue-400">Pengetahuan</span>
+            <span class="mx-1">•</span>
+            <span>April 29, 2025</span>
+        </div>
+        <h3 class="font-semibold mb-2">Apa Itu Kecerdasan Buatan? Panduan Santai tapi Mendalam!</h3>
+        <p class="text-sm text-gray-400 mb-3 line-clamp-3">
+            Hai, Sobat Digital!
+Pernah nggak sih kamu penasaran, apa sih sebenarnya kecerdasan buatan atau AI itu? Kok bisa Siri ngerti pertanyaanmu, kok TikTok tahu video apa yang kamu suka? Yuk, kita ngobrol santai tapi tetap mendalam soal AI!
+        </p>
+        <a href="https://acakmenarik.blogspot.com/2025/04/apa-itu-kecerdasan-buatan-panduan.html" class="text-blue-400 text-sm hover:text-blue-300 transition-colors">
+            Read More →
+        </a>
+    </div>
+</div>
+    </div>
+</section>
+    </main>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            const activeContent = document.getElementById(`${pageId}-content`);
+            activeContent.classList.add('active');
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.querySelector(`a[href="#${pageId}"]`).classList.add('active');
+        }
+        function toggleSidebar() {
+        const sidebar = document.querySelector('aside');
+        const hamburger = document.querySelector('.mobile-menu-btn');
+        
+        sidebar.classList.toggle('active');
+        hamburger.classList.toggle('hidden'); // Tambahkan ini
+        
+        if(sidebar.classList.contains('active')) {
+            document.body.classList.add('overflow-hidden');
+        } else {
+            document.body.classList.remove('overflow-hidden');
+        }
+    }
+    // Scroll to Top Button
+    const scrollTopButton = document.getElementById('scrollTop');
+    
+    // Tampilkan/tutup button saat scroll
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 200) {
+            scrollTopButton.classList.remove('hidden');
+        } else {
+            scrollTopButton.classList.add('hidden');
+        }
+    });
+
+    // Animasi scroll ke atas
+    scrollTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+         
+        window.onload = () => showPage('about');
+    </script>
+</body>
+</html>
